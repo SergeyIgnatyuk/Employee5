@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = JdbcDepartmentDaoImplTest.JdbcDepartmentDaoImplTestConfig.class)
@@ -71,7 +68,7 @@ public class JdbcDepartmentDaoImplTest {
         Assert.assertEquals("logistics, expedition, planning", firstDepartmentFromList.getDescription());
         Assert.assertEquals("+375336446244", firstDepartmentFromList.getPhoneNumber());
         Assert.assertEquals(new GregorianCalendar(2008, Calendar.MARCH, 15).getTime(), firstDepartmentFromList.getDateOfFormation());
-        Assert.assertEquals(3 , employeesFromFirstDepartment.size());
+        Assert.assertEquals(2 , employeesFromFirstDepartment.size());
 
         Assert.assertEquals("Transport Service", secondDepartmentFromList.getName());
         Assert.assertEquals("tire fitting, car wash, drivers", secondDepartmentFromList.getDescription());
@@ -81,6 +78,7 @@ public class JdbcDepartmentDaoImplTest {
     }
 
     @Test
+    @Rollback(value = true)
     public void getOneDepartmentByIdTest() {
         Department department = departmentDao.getOneDepartmentById(1L);
 
@@ -89,7 +87,41 @@ public class JdbcDepartmentDaoImplTest {
         Assert.assertEquals("+375336446244", department.getPhoneNumber());
         Assert.assertEquals(new GregorianCalendar(2008, Calendar.MARCH, 15).getTime(), department.getDateOfFormation());
 
-        Assert.assertEquals(3, department.getEmployees().size());
+        Assert.assertEquals(2, department.getEmployees().size());
 
+    }
+
+    @Test
+    @Rollback(value = true)
+    public void createDepartmentTest() {
+        Long id = 3L;
+
+        departmentDao.createDepartment(Department.builder()
+        .id(id)
+        .name("department")
+        .description("description")
+        .phoneNumber("phone number")
+        .dateOfFormation(new Date())
+        .build());
+
+        Department department = departmentDao.getOneDepartmentById(id);
+
+        Assert.assertEquals(id, department.getId());
+        Assert.assertEquals("department", department.getName());
+        Assert.assertEquals("description", department.getDescription());
+        Assert.assertEquals("phone number", department.getPhoneNumber());
+    }
+
+    @Test
+    @Rollback(value = true)
+    public void deleteDepartmentTest() {
+        Long id = 1L;
+        Department department = departmentDao.getOneDepartmentById(id);
+
+        departmentDao.deleteDepartment(department);
+
+        List<Department> departmentList = departmentDao.findAllDepartmentsWithTheirUsers();
+
+        Assert.assertEquals(1, departmentList.size());
     }
 }

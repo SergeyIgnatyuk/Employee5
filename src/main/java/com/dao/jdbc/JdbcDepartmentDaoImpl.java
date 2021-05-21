@@ -28,7 +28,14 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
             "d.description, d.phone_number, d.date_of_formation, e.id AS employee_id, " +
             "e.full_name, e.date_of_birth, e.phone_number, e.email_address, " +
             "e.position, e.date_of_employment FROM departments d " +
-            "LEFT JOIN employees e on d.id = e.department_id WHERE e.id = :id";
+            "LEFT JOIN employees e on d.id = e.department_id WHERE d.id = :id";
+
+    private static final String SQL_INSERT_DEPARTMENT = "INSERT INTO departments " +
+            "(name, description, phone_number, date_of_formation) VALUES " +
+            "(:name, :description, :phone_number, :date_of_formation)";
+
+    private static final String SQL_DELETE_DEPARTMENT = "UPDATE employees SET department_id = null WHERE department_id = :id; " +
+            "DELETE FROM departments WHERE id = :id";
 
     @Autowired
     public JdbcDepartmentDaoImpl(DataSource dataSource) {
@@ -105,5 +112,23 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
     public Department getOneDepartmentById(Long id) {
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENT, parameters, resultSetExtractorForOneDepartment());
+    }
+
+    @Override
+    public void createDepartment(Department department) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("name", department.getName());
+        parameters.put("description", department.getDescription());
+        parameters.put("phone_number", department.getPhoneNumber());
+        parameters.put("date_of_formation", department.getDateOfFormation());
+
+        namedParameterJdbcTemplate.update(SQL_INSERT_DEPARTMENT, parameters);
+    }
+
+    @Override
+    public void deleteDepartment(Department department) {
+        SqlParameterSource parameters = new MapSqlParameterSource("id", department.getId());
+
+        namedParameterJdbcTemplate.update(SQL_DELETE_DEPARTMENT, parameters);
     }
 }

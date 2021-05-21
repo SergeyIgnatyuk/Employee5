@@ -6,7 +6,7 @@
 
     <context:property-placeholder location="classpath:/data-access.properties"/>
 
-    <context:component-scan base-package="com.dao.jdbc"/>
+    <context:component-scan base-package="com.dao.jdbc, com.service"/>
 
     <tx:annotation-driven/>
 

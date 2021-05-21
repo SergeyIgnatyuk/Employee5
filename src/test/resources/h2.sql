@@ -38,6 +38,6 @@ values ('Sergey Ignatuk', '1989-08-07', '+375295326531', 's.ignatyuk@yuridan.by'
 insert into employees (full_name, date_of_birth, phone_number, email_address, position, date_of_employment, department_id)
 values ('Natasha Ignatuk', '1989-04-04', '+375336718108', 'info@yuridan.by', 'forwarder', '2013-09-20', 1);
 
-insert into employees (full_name, date_of_birth, phone_number, email_address, position, date_of_employment, department_id)
-values ('Ivanovskaya Yulia', '1988-07-31', '+375295202152', 'info@yuridan.by', 'forwarder', '2014-10-31', 1);
+insert into employees (full_name, date_of_birth, phone_number, email_address, position, date_of_employment)
+values ('Ivanovskaya Yulia', '1988-07-31', '+375295202152', 'info@yuridan.by', 'forwarder', '2014-10-31');
 
