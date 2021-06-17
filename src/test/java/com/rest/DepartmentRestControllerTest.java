@@ -64,7 +64,7 @@ public class DepartmentRestControllerTest {
     }
 
     @Test
-    public void givenDepartments_whenFindAllDepartmentsWithTheirUsers_thenReturnJson() throws Exception {
+    public void givenDepartments_whenGetAllDepartmentsWithTheirUsers_thenReturnJson() throws Exception {
         List<Department> departmentList = Stream.of(Department.builder()
                 .id(1L)
                 .name("first department")
@@ -86,7 +86,7 @@ public class DepartmentRestControllerTest {
 
         Employee firstEmployeeFromDepartment = departmentFromList.getEmployees().stream().findFirst().get();
 
-        when(departmentService.findAllDepartmentsWithTheirUsers()).thenReturn(departmentList);
+        when(departmentService.getAllDepartmentsWithTheirUsers()).thenReturn(departmentList);
 
         this.mockMvc.perform(get("/departments")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -103,5 +103,44 @@ public class DepartmentRestControllerTest {
                 .andExpect(jsonPath("$[0].employees[0].emailAddress").value(firstEmployeeFromDepartment.getEmailAddress()))
                 .andExpect(jsonPath("$[0].employees[0].position").value(firstEmployeeFromDepartment.getPosition()))
                 .andExpect(jsonPath("$[0].employees[0].dateOfEmployment").value(new SimpleDateFormat("yyyy-MM-dd").format(firstEmployeeFromDepartment.getDateOfEmployment())));
+    }
+
+    @Test
+    public void givenDepartment_whenGetOneDepartment_thenReturnJson() throws Exception {
+        Department department = Department.builder()
+                .id(1L)
+                .name("first department")
+                .description("description")
+                .phoneNumber("phone number")
+                .dateOfFormation(new Date())
+                .employees(Stream.of(Employee.builder()
+                        .id(1L)
+                        .fullName("full name")
+                        .dateOfBirth(new Date())
+                        .phoneNumber("phone number")
+                        .emailAddress("email address")
+                        .position("position")
+                        .dateOfEmployment(new Date())
+                        .build()).collect(Collectors.toSet()))
+                .build();
+
+        Employee employee = department.getEmployees().stream().findFirst().get();
+
+        when(departmentService.getOneDepartmentById(1L)).thenReturn(department);
+
+        this.mockMvc.perform(get("/departments/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(department.getId().intValue()))
+                .andExpect(jsonPath("$.name").value(department.getName()))
+                .andExpect(jsonPath("$.description").value(department.getDescription()))
+                .andExpect(jsonPath("$.phoneNumber").value(department.getPhoneNumber()))
+                .andExpect(jsonPath("$.dateOfFormation").value(new SimpleDateFormat("yyyy-MM-dd").format(department.getDateOfFormation())))
+                .andExpect(jsonPath("$.employees[0].id").value(employee.getId().intValue()))
+                .andExpect(jsonPath("$.employees[0].fullName").value(employee.getFullName()))
+                .andExpect(jsonPath("$.employees[0].dateOfBirth").value(new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateOfBirth())))
+                .andExpect(jsonPath("$.employees[0].phoneNumber").value(employee.getPhoneNumber()))
+                .andExpect(jsonPath("$.employees[0].emailAddress").value(employee.getEmailAddress()))
+                .andExpect(jsonPath("$.employees[0].position").value(employee.getPosition()))
+                .andExpect(jsonPath("$.employees[0].dateOfEmployment").value(new SimpleDateFormat("yyyy-MM-dd").format(employee.getDateOfEmployment())));
     }
 }

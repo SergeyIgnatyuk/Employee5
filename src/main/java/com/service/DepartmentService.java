@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DepartmentService {
 
-    List<Department> findAllDepartmentsWithTheirUsers();
+    List<Department> getAllDepartmentsWithTheirUsers();
 
     Department getOneDepartmentById(Long id);
 

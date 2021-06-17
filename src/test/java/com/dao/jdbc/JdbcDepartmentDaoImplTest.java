@@ -52,7 +52,7 @@ public class JdbcDepartmentDaoImplTest {
     @Test
     @Rollback(value = true)
     public void findAllDepartmentsWithTheirUsersTest() {
-        List<Department> departmentList = departmentDao.findAllDepartmentsWithTheirUsers();
+        List<Department> departmentList = departmentDao.getAllDepartmentsWithTheirUsers();
 
         Department firstDepartmentFromList = departmentList.get(0);
 
@@ -120,7 +120,7 @@ public class JdbcDepartmentDaoImplTest {
 
         departmentDao.deleteDepartment(department);
 
-        List<Department> departmentList = departmentDao.findAllDepartmentsWithTheirUsers();
+        List<Department> departmentList = departmentDao.getAllDepartmentsWithTheirUsers();
 
         Assert.assertEquals(1, departmentList.size());
     }

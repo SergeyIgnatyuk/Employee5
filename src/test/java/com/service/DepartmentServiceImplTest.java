@@ -38,8 +38,8 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void findAllDepartmentsWithTheirUsers() {
-        departmentService.findAllDepartmentsWithTheirUsers();
-        verify(departmentDao, times(1)).findAllDepartmentsWithTheirUsers();
+        departmentService.getAllDepartmentsWithTheirUsers();
+        verify(departmentDao, times(1)).getAllDepartmentsWithTheirUsers();
     }
 
     @Test

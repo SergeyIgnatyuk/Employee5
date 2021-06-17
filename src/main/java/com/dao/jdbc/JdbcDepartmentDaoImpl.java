@@ -15,6 +15,14 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.*;
 
+/**
+ * Department DAO class implements {@link com.dao.DepartmentDao}
+ * and uses {@link org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate}.
+ *
+ * @author Sergey Ignatyuk
+ * @version 1.0
+ */
+
 @Repository
 public class JdbcDepartmentDaoImpl implements DepartmentDao {
 
@@ -83,7 +91,7 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
     }
 
     private ResultSetExtractor<Department> resultSetExtractorForOneDepartment() {
-        LOGGER.debug("resultSetExtractorForOneDepartment is running");
+        LOGGER.debug("resultSetExtractorForOneDepartment is running from JdbcDepartmentDaoImpl");
 
         return (rs) -> {
             Department department = new Department();
@@ -112,15 +120,15 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public List<Department> findAllDepartmentsWithTheirUsers() {
-        LOGGER.debug("findAllDepartmentsWithTheirUsers is running");
+    public List<Department> getAllDepartmentsWithTheirUsers() {
+        LOGGER.debug("findAllDepartmentsWithTheirUsers is running from JdbcDepartmentDaoImpl");
 
         return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENTS, resultSetExtractorForList());
     }
 
     @Override
     public Department getOneDepartmentById(Long id) {
-        LOGGER.debug("getOneDepartmentById is running with id = {}", id);
+        LOGGER.debug("getOneDepartmentById is running from JdbcDepartmentDaoImpl with id = {}", id);
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENT, parameters, resultSetExtractorForOneDepartment());
@@ -128,7 +136,7 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public void createDepartment(Department department) {
-        LOGGER.debug("createDepartment is running with department name = {}", department.getName());
+        LOGGER.debug("createDepartment is running from JdbcDepartmentDaoImpl with department name = {}", department.getName());
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", department.getName());
@@ -141,7 +149,7 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public void deleteDepartment(Department department) {
-        LOGGER.debug("deleteDepartment is running with department name = {}", department.getName());
+        LOGGER.debug("deleteDepartment is running from JdbcDepartmentDaoImpl with department name = {}", department.getName());
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", department.getId());
 

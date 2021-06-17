@@ -16,6 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Employee DAO class implements {@link com.dao.EmployeeDao}
+ * and uses {@link org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate}.
+ *
+ * @author Sergey Ignatyuk
+ * @version 1.0
+ */
+
 @Repository
 public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
@@ -64,7 +72,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public Employee getOneEmployeeById(Long id) {
-        LOGGER.debug("getOneEmployeeById is running with id = {}", id);
+        LOGGER.debug("getOneEmployeeById is running from JdbcEmployeeDaoImpl with id = {}", id);
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(SQL_SELECT_EMPLOYEE, parameters, rowMapper());
@@ -72,7 +80,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void createEmployee(Employee employee) {
-        LOGGER.debug("createEmployee is running with employee  full name = {}", employee.getFullName());
+        LOGGER.debug("createEmployee is running from JdbcEmployeeDaoImpl with employee  full name = {}", employee.getFullName());
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("full_name", employee.getFullName());
@@ -86,7 +94,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void deleteEmployee(Employee employee) {
-        LOGGER.debug("deleteEmployee is running with employee  fullName = {}", employee.getFullName());
+        LOGGER.debug("deleteEmployee is running from JdbcEmployeeDaoImpl with employee  fullName = {}", employee.getFullName());
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", employee.getId());
         namedParameterJdbcTemplate.update(SQL_DELETE_EMPLOYEE, parameters);
@@ -94,7 +102,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void addEmployeeToDepartment(Long employeeId, Long departmentId) {
-        LOGGER.debug("addEmployeeToDepartment is running with employeeId = {}, departmentId = {}", employeeId, departmentId);
+        LOGGER.debug("addEmployeeToDepartment is running from JdbcEmployeeDaoImpl with employeeId = {}, departmentId = {}", employeeId, departmentId);
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("employeeId", employeeId);
@@ -105,7 +113,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public void removeEmployeeFromDepartment(Long employeeId) {
-        LOGGER.debug("removeEmployeeFromDepartment is running with employeeId = {}", employeeId);
+        LOGGER.debug("removeEmployeeFromDepartment is running from JdbcEmployeeDaoImpl with employeeId = {}", employeeId);
 
         SqlParameterSource parameters = new MapSqlParameterSource("employeeId", employeeId);
         namedParameterJdbcTemplate.update(SQL_DELETE_EMPLOYEE_FROM_DEPARTMENT, parameters);
@@ -113,7 +121,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public List<Employee> getAllEmployeesWhichDoNotBelongToAnyDepartment() {
-        LOGGER.debug("getAllEmployeesWhichDoNotBelongToAnyDepartment is running");
+        LOGGER.debug("getAllEmployeesWhichDoNotBelongToAnyDepartment is running from JdbcEmployeeDaoImpl");
 
         return namedParameterJdbcTemplate.query(SQL_SELECT_EMPLOYEES_WITHOUT_DEPARTMENT, rowMapper());
     }

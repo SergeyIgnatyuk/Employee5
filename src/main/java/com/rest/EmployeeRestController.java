@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Employee REST controller class
+ *
+ * @author Sergey Ignatyuk
+ * @version 1.0
+ */
+
 @RestController
 @RequestMapping(value = "/employees")
 public class EmployeeRestController {
