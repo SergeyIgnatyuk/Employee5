@@ -35,6 +35,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         LOGGER.error("Argument not valid", ex);
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date().getTime());
         body.put("status", status.value());
@@ -54,6 +55,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
         LOGGER.error("Resource not found", ex);
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date().getTime());
         body.put("status", HttpStatus.NOT_FOUND);
@@ -69,6 +71,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
         LOGGER.error("Argument not valid", ex);
+
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date().getTime());
         body.put("status", HttpStatus.BAD_REQUEST);

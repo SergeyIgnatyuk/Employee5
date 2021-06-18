@@ -1,6 +1,7 @@
 package com.service;
 
 import com.dao.DepartmentDao;
+import com.exceptions.ResourceNotFoundException;
 import com.model.Department;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Department service class implements {@link com.service.DepartmentService}
@@ -34,14 +38,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> getAllDepartmentsWithTheirUsers() {
         LOGGER.debug("getAllDepartmentsWithTheirUsers is running from DepartmentServiceImpl");
 
-        return departmentDao.getAllDepartmentsWithTheirUsers();
+        return departmentDao.getAllDepartmentsWithTheirUsers()
+                .stream()
+                .sorted((o1, o2) -> (int) (o1.getId() - o2.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Department getOneDepartmentById(Long id) {
         LOGGER.debug("getOneDepartmentById is running from DepartmentServiceImpl with id = {}", id);
 
-        return departmentDao.getOneDepartmentById(id);
+        return Optional.of(departmentDao.getOneDepartmentById(id)).orElseThrow(() ->
+                new ResourceNotFoundException("Department with ID: " + id + " Not Found!"));
     }
 
     @Override
