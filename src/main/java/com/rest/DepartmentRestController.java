@@ -5,11 +5,13 @@ import com.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/departments")
+@Validated
 public class DepartmentRestController {
 
     private final DepartmentService departmentService;
@@ -36,7 +39,7 @@ public class DepartmentRestController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Department> getOneDepartment(@PathVariable Long id) {
+    public ResponseEntity<Department> getOneDepartment(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id) {
         return new ResponseEntity<>(departmentService.getOneDepartmentById(id), HttpStatus.OK);
     }
 }

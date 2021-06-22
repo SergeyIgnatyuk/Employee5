@@ -45,6 +45,7 @@ public class DepartmentServiceImplTest {
     @Test
     public void getOneDepartmentById() {
         Long id = 1L;
+        when(departmentDao.getOneDepartmentById(id)).thenReturn(new Department());
         departmentService.getOneDepartmentById(id);
         verify(departmentDao, times(1)).getOneDepartmentById(id);
     }

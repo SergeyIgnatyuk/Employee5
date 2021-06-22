@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Department service class implements {@link com.service.DepartmentService}
@@ -48,8 +47,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getOneDepartmentById(Long id) {
         LOGGER.debug("getOneDepartmentById is running from DepartmentServiceImpl with id = {}", id);
 
-        return Optional.of(departmentDao.getOneDepartmentById(id)).orElseThrow(() ->
-                new ResourceNotFoundException("Department with ID: " + id + " Not Found!"));
+//        return Optional.of(departmentDao.getOneDepartmentById(id)).orElseThrow(() ->
+//                new ResourceNotFoundException("Department with ID: " + id + " Not Found!"));
+
+        Department department = departmentDao.getOneDepartmentById(id);
+
+        if (department == null) throw new ResourceNotFoundException("Department with ID: " + id + " Not Found!");
+
+        return department;
     }
 
     @Override

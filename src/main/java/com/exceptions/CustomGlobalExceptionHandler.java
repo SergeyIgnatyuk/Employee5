@@ -13,12 +13,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Exceptions handling
@@ -36,10 +32,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         LOGGER.error("Argument not valid", ex);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date().getTime());
-        body.put("status", status.value());
-
         //Get all errors
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
@@ -47,40 +39,32 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
-        body.put("errors", errors);
+        ApiError apiError = new ApiError(status, new Date().getTime(), "Argument not valid", errors);
 
-        return new ResponseEntity<>(body, headers, status);
+        return new ResponseEntity<>(apiError, headers, status);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
         LOGGER.error("Resource not found", ex);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date().getTime());
-        body.put("status", HttpStatus.NOT_FOUND);
-        body.put("message", "Resource Not Found");
+        String error = ex.getMessage();
 
-        List<String> errors = Stream.of(ex.getMessage()).collect(Collectors.toList());
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, new Date().getTime(), "Resource Not Found", error);
 
-        body.put("errors", errors);
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-        LOGGER.error("Argument not valid", ex);
+        LOGGER.error("Constraint violation", ex);
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date().getTime());
-        body.put("status", HttpStatus.BAD_REQUEST);
-        body.put("message", "Constraint Violation");
+        String error = ex.getMessage();
 
-        List<String> errors = Stream.of(ex.getMessage()).collect(Collectors.toList());
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, new Date().getTime(), "Constraint Violation", error);
 
-        body.put("errors", errors);
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
+
+
 }

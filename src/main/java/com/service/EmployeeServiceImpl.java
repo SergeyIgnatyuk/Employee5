@@ -1,6 +1,7 @@
 package com.service;
 
 import com.dao.EmployeeDao;
+import com.exceptions.ResourceNotFoundException;
 import com.model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Employee service class implements {@link com.service.EmployeeService}
@@ -36,7 +38,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getOneEmployeeById(Long id) {
         LOGGER.debug("getOneEmployeeById is running from EmployeeServiceImpl with id = {}", id);
 
-        return employeeDao.getOneEmployeeById(id);
+        Employee employee = employeeDao.getOneEmployeeById(id);
+
+        if (employee == null) throw new ResourceNotFoundException("Employee with ID: " + id + " Not Found!");
+
+        return employee;
     }
 
     @Override
