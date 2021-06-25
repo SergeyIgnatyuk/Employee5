@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Employee service class implements {@link com.service.EmployeeService}
@@ -38,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getOneEmployeeById(Long id) {
         LOGGER.debug("getOneEmployeeById is running from EmployeeServiceImpl with id = {}", id);
 
-        Employee employee = employeeDao.getOneEmployeeById(id);
+        Employee employee = employeeDao.getOne(id);
 
         if (employee == null) throw new ResourceNotFoundException("Employee with ID: " + id + " Not Found!");
 
@@ -82,6 +81,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getAllEmployeesWhichDoNotBelongToAnyDepartment() {
         LOGGER.debug("getAllEmployeesWhichDoNotBelongToAnyDepartment is running from EmployeeServiceImpl");
 
-        return employeeDao.getAllEmployeesWhichDoNotBelongToAnyDepartment();
+        return employeeDao.getEmployeesByDepartmentIdIsNull();
     }
 }

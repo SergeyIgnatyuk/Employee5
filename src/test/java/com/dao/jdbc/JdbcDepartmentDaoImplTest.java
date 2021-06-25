@@ -52,7 +52,7 @@ public class JdbcDepartmentDaoImplTest {
     @Test
     @Rollback(value = true)
     public void findAllDepartmentsWithTheirUsersTest() {
-        List<Department> departmentList = departmentDao.getAllDepartmentsWithTheirUsers();
+        List<Department> departmentList = departmentDao.findAll();
 
         Department firstDepartmentFromList = departmentList.get(0);
 
@@ -80,7 +80,7 @@ public class JdbcDepartmentDaoImplTest {
     @Test
     @Rollback(value = true)
     public void getOneDepartmentByIdTest() {
-        Department department = departmentDao.getOneDepartmentById(1L);
+        Department department = departmentDao.getOne(1L);
 
         Assert.assertEquals("Logistics Department", department.getName());
         Assert.assertEquals("logistics, expedition, planning", department.getDescription());
@@ -104,7 +104,7 @@ public class JdbcDepartmentDaoImplTest {
         .dateOfFormation(new Date())
         .build());
 
-        Department department = departmentDao.getOneDepartmentById(id);
+        Department department = departmentDao.getOne(id);
 
         Assert.assertEquals(id, department.getId());
         Assert.assertEquals("department", department.getName());
@@ -116,11 +116,11 @@ public class JdbcDepartmentDaoImplTest {
     @Rollback(value = true)
     public void deleteDepartmentTest() {
         Long id = 1L;
-        Department department = departmentDao.getOneDepartmentById(id);
+        Department department = departmentDao.getOne(id);
 
         departmentDao.deleteDepartment(department);
 
-        List<Department> departmentList = departmentDao.getAllDepartmentsWithTheirUsers();
+        List<Department> departmentList = departmentDao.findAll();
 
         Assert.assertEquals(1, departmentList.size());
     }

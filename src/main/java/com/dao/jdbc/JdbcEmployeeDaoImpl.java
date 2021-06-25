@@ -71,7 +71,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public Employee getOneEmployeeById(Long id) {
+    public Employee getOne(Long id) {
         LOGGER.debug("getOneEmployeeById is running from JdbcEmployeeDaoImpl with id = {}", id);
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
@@ -120,7 +120,7 @@ public class JdbcEmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public List<Employee> getAllEmployeesWhichDoNotBelongToAnyDepartment() {
+    public List<Employee> getEmployeesByDepartmentIdIsNull() {
         LOGGER.debug("getAllEmployeesWhichDoNotBelongToAnyDepartment is running from JdbcEmployeeDaoImpl");
 
         return namedParameterJdbcTemplate.query(SQL_SELECT_EMPLOYEES_WITHOUT_DEPARTMENT, rowMapper());

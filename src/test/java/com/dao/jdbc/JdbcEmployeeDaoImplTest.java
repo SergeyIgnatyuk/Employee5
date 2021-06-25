@@ -56,7 +56,7 @@ public class JdbcEmployeeDaoImplTest {
     @Rollback(value = true)
     public void getOneEmployeeByIdTest() {
 
-        Employee employee = employeeDao.getOneEmployeeById(1L);
+        Employee employee = employeeDao.getOne(1L);
 
         Assert.assertEquals(1, employee.getId().intValue());
         Assert.assertEquals("Sergey Ignatuk", employee.getFullName());
@@ -82,7 +82,7 @@ public class JdbcEmployeeDaoImplTest {
                 .dateOfEmployment(new Date())
                 .build());
 
-        Employee employee = employeeDao.getOneEmployeeById(id);
+        Employee employee = employeeDao.getOne(id);
 
         Assert.assertEquals(4, employee.getId().intValue());
         Assert.assertEquals("full name", employee.getFullName());
@@ -95,25 +95,25 @@ public class JdbcEmployeeDaoImplTest {
     @Rollback(value = true)
     public void deleteEmployeeTest() {
         Long id = 1L;
-        Employee employee = employeeDao.getOneEmployeeById(id);
+        Employee employee = employeeDao.getOne(id);
 
         employeeDao.deleteEmployee(employee);
 
-        employee = employeeDao.getOneEmployeeById(id);
+        employee = employeeDao.getOne(id);
     }
 
     @Test
     @Rollback(value = true)
     public void addEmployeeToDepartmentTest() {
         Long employeeId = 1L;
-        Employee employee = employeeDao.getOneEmployeeById(employeeId);
+        Employee employee = employeeDao.getOne(employeeId);
 
         Assert.assertEquals(1, employee.getId().intValue());
         Assert.assertEquals(1, employee.getDepartmentId().intValue());
 
         employeeDao.addEmployeeToDepartment(employeeId, 2L);
 
-        employee = employeeDao.getOneEmployeeById(employeeId);
+        employee = employeeDao.getOne(employeeId);
 
         Assert.assertEquals(1, employee.getId().intValue());
         Assert.assertEquals(2, employee.getDepartmentId().intValue());
@@ -123,14 +123,14 @@ public class JdbcEmployeeDaoImplTest {
     @Rollback(value = true)
     public void removeEmployeeFromDepartmentTest() {
         Long employeeId = 1L;
-        Employee employee = employeeDao.getOneEmployeeById(employeeId);
+        Employee employee = employeeDao.getOne(employeeId);
 
         Assert.assertEquals(1, employee.getId().intValue());
         Assert.assertEquals(1, employee.getDepartmentId().intValue());
 
         employeeDao.removeEmployeeFromDepartment(employeeId);
 
-        employee = employeeDao.getOneEmployeeById(employeeId);
+        employee = employeeDao.getOne(employeeId);
 
         Assert.assertEquals(0, employee.getDepartmentId().intValue());
     }
@@ -138,7 +138,7 @@ public class JdbcEmployeeDaoImplTest {
     @Test
     @Rollback(value = true)
     public void getAllEmployeesWhichDoNotBelongToAnyDepartmentTest() {
-        List<Employee> employees = employeeDao.getAllEmployeesWhichDoNotBelongToAnyDepartment();
+        List<Employee> employees = employeeDao.getEmployeesByDepartmentIdIsNull();
 
         Assert.assertEquals(1, employees.size());
 

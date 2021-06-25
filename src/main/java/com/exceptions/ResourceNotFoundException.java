@@ -1,4 +1,7 @@
 package com.exceptions;
+
+import org.springframework.stereotype.Component;
+
 /**
  * Custom exception for NoSuchElementException
  *

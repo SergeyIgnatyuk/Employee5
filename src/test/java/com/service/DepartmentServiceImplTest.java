@@ -39,15 +39,15 @@ public class DepartmentServiceImplTest {
     @Test
     public void findAllDepartmentsWithTheirUsers() {
         departmentService.getAllDepartmentsWithTheirUsers();
-        verify(departmentDao, times(1)).getAllDepartmentsWithTheirUsers();
+        verify(departmentDao, times(1)).findAll();
     }
 
     @Test
     public void getOneDepartmentById() {
         Long id = 1L;
-        when(departmentDao.getOneDepartmentById(id)).thenReturn(new Department());
+        when(departmentDao.getOne(id)).thenReturn(new Department());
         departmentService.getOneDepartmentById(id);
-        verify(departmentDao, times(1)).getOneDepartmentById(id);
+        verify(departmentDao, times(1)).getOne(id);
     }
 
     @Test

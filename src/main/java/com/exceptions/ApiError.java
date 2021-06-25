@@ -1,18 +1,19 @@
 package com.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-class ApiError {
+public class ApiError {
 
     private HttpStatus status;
     private long timestamp;
     private String message;
     private List<String> errors;
 
-    ApiError(HttpStatus status, long timestamp, String message, List<String> errors) {
+    public ApiError(HttpStatus status, long timestamp, String message, List<String> errors) {
         super();
         this.status = status;
         this.timestamp = timestamp;
@@ -20,7 +21,7 @@ class ApiError {
         this.errors = errors;
     }
 
-    ApiError(HttpStatus status, long timestamp, String message, String error) {
+    public ApiError(HttpStatus status, long timestamp, String message, String error) {
         super();
         this.status = status;
         this.timestamp = timestamp;

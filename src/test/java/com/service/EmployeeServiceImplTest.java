@@ -39,9 +39,9 @@ public class EmployeeServiceImplTest {
     @Test
     public void getOneEmployeeById() {
         Long id = 1L;
-        when(employeeDao.getOneEmployeeById(id)).thenReturn(new Employee());
+        when(employeeDao.getOne(id)).thenReturn(new Employee());
         employeeService.getOneEmployeeById(id);
-        verify(employeeDao, times(1)).getOneEmployeeById(id);
+        verify(employeeDao, times(1)).getOne(id);
     }
 
     @Test
@@ -76,6 +76,6 @@ public class EmployeeServiceImplTest {
     @Test
     public void getAllEmployeesWhichDoNotBelongToAnyDepartment() {
         employeeService.getAllEmployeesWhichDoNotBelongToAnyDepartment();
-        verify(employeeDao, times(1)).getAllEmployeesWhichDoNotBelongToAnyDepartment();
+        verify(employeeDao, times(1)).getEmployeesByDepartmentIdIsNull();
     }
 }

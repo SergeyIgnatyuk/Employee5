@@ -37,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> getAllDepartmentsWithTheirUsers() {
         LOGGER.debug("getAllDepartmentsWithTheirUsers is running from DepartmentServiceImpl");
 
-        return departmentDao.getAllDepartmentsWithTheirUsers()
+        return departmentDao.findAll()
                 .stream()
                 .sorted((o1, o2) -> (int) (o1.getId() - o2.getId()))
                 .collect(Collectors.toList());
@@ -47,14 +47,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department getOneDepartmentById(Long id) {
         LOGGER.debug("getOneDepartmentById is running from DepartmentServiceImpl with id = {}", id);
 
-//        return Optional.of(departmentDao.getOneDepartmentById(id)).orElseThrow(() ->
-//                new ResourceNotFoundException("Department with ID: " + id + " Not Found!"));
-
-        Department department = departmentDao.getOneDepartmentById(id);
-
-        if (department == null) throw new ResourceNotFoundException("Department with ID: " + id + " Not Found!");
-
-        return department;
+        return Optional.of(departmentDao.getOne(id)).orElseThrow(() ->
+                new ResourceNotFoundException("Department with ID: " + id + " Not Found!"));
     }
 
     @Override

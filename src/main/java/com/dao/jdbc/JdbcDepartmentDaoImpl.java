@@ -120,14 +120,14 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public List<Department> getAllDepartmentsWithTheirUsers() {
+    public List<Department> findAll() {
         LOGGER.debug("findAllDepartmentsWithTheirUsers is running from JdbcDepartmentDaoImpl");
 
         return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENTS, resultSetExtractorForList());
     }
 
     @Override
-    public Department getOneDepartmentById(Long id) {
+    public Department getOne(Long id) {
         LOGGER.debug("getOneDepartmentById is running from JdbcDepartmentDaoImpl with id = {}", id);
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
