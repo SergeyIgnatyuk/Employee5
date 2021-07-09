@@ -1,7 +1,5 @@
 package com.rest;
 
-import com.exceptions.ApiError;
-import com.exceptions.ResourceNotFoundException;
 import com.model.Department;
 import com.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Min;
-import java.util.Date;
 import java.util.List;
 
 /**

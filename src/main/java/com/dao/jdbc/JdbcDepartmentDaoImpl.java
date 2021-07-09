@@ -1,6 +1,7 @@
 package com.dao.jdbc;
 
 import com.dao.DepartmentDao;
+import com.exceptions.ResourceNotFoundException;
 import com.model.Department;
 import com.model.Employee;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Department DAO class implements {@link com.dao.DepartmentDao}
@@ -90,35 +92,6 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
         };
     }
 
-    private ResultSetExtractor<Department> resultSetExtractorForOneDepartment() {
-        LOGGER.debug("resultSetExtractorForOneDepartment is running from JdbcDepartmentDaoImpl");
-
-        return (rs) -> {
-            Department department = new Department();
-            Set<Employee> employees = new HashSet<>();
-
-            while (rs.next()) {
-                department.setId(rs.getLong("id"));
-                department.setName(rs.getString("name"));
-                department.setDescription(rs.getString("description"));
-                department.setPhoneNumber(rs.getString("phone_number"));
-                department.setDateOfFormation(rs.getDate("date_of_formation"));
-
-                employees.add(Employee.builder()
-                        .id(rs.getLong("employee_id"))
-                        .fullName(rs.getString("full_name"))
-                        .dateOfBirth(rs.getDate("date_of_birth"))
-                        .phoneNumber(rs.getString("phone_number"))
-                        .emailAddress(rs.getString("email_address"))
-                        .position(rs.getString("position"))
-                        .dateOfEmployment(rs.getDate("date_of_employment"))
-                        .build());
-            }
-            department.getEmployees().addAll(employees);
-            return department;
-        };
-    }
-
     @Override
     public List<Department> findAll() {
         LOGGER.debug("findAllDepartmentsWithTheirUsers is running from JdbcDepartmentDaoImpl");
@@ -131,7 +104,8 @@ public class JdbcDepartmentDaoImpl implements DepartmentDao {
         LOGGER.debug("getOneDepartmentById is running from JdbcDepartmentDaoImpl with id = {}", id);
 
         SqlParameterSource parameters = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENT, parameters, resultSetExtractorForOneDepartment());
+
+        return namedParameterJdbcTemplate.query(SQL_SELECT_DEPARTMENT, parameters, resultSetExtractorForList()).get(0);
     }
 
     @Override

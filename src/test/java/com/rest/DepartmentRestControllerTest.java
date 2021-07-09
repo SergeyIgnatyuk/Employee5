@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -64,6 +65,7 @@ public class DepartmentRestControllerTest {
     }
 
     @Test
+//    @WithMockUser(roles = {"ROLE_ADMIN, ROLE_USER"})
     public void givenDepartments_whenGetAllDepartmentsWithTheirUsers_thenReturnJson() throws Exception {
         List<Department> departmentList = Stream.of(Department.builder()
                 .id(1L)
@@ -106,6 +108,7 @@ public class DepartmentRestControllerTest {
     }
 
     @Test
+//    @WithMockUser(roles = {"ROLE_ADMIN, ROLE_USER"})
     public void givenDepartment_whenGetOneDepartment_thenReturnJson() throws Exception {
         Department department = Department.builder()
                 .id(1L)

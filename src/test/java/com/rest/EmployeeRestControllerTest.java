@@ -60,6 +60,7 @@ public class EmployeeRestControllerTest {
     }
 
     @Test
+    //    @WithMockUser(roles = {"ROLE_ADMIN, ROLE_USER"})
     public void givenEmployee_whenGetOneEmployeeById_thenReturnJson() throws Exception {
         Long id = 1L;
         Employee employee = Employee.builder()
